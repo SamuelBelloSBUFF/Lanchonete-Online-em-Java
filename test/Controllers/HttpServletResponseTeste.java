@@ -9,7 +9,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 public class HttpServletResponseTeste implements HttpServletResponse{
 
     private StringWriter writer;
+    
+    private Map<String, String> header = new HashMap<>();
 
     public HttpServletResponseTeste() {
         writer = new StringWriter();
@@ -97,7 +101,7 @@ public class HttpServletResponseTeste implements HttpServletResponse{
 
     @Override
     public void addHeader(String name, String value) {
-
+        header.put(name, value);
     }
 
     @Override
@@ -127,7 +131,7 @@ public class HttpServletResponseTeste implements HttpServletResponse{
 
     @Override
     public String getHeader(String name) {
-        return null;
+        return header.get(name);
     }
 
     @Override

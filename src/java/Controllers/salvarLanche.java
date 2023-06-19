@@ -48,17 +48,17 @@ public class salvarLanche extends HttpServlet {
         String json = "";
         
         ////////Validar Cookie
-        boolean resultado = false;
+        //boolean resultado = false;
         
-        try{
-        Cookie[] cookies = request.getCookies();
-        ValidadorCookie validar = new ValidadorCookie();
+        //try{
+        //Cookie[] cookies = request.getCookies();
+        //ValidadorCookie validar = new ValidadorCookie();
         
-        resultado = validar.validarFuncionario(cookies);
-        }catch(java.lang.NullPointerException e){}
+        //resultado = validar.validarFuncionario(cookies);
+        //}catch(java.lang.NullPointerException e){}
         //////////////
         
-        if ((br != null) && resultado) {
+        if ((br != null)) {
             json = br.readLine();
             byte[] bytes = json.getBytes(ISO_8859_1); 
             String jsonStr = new String(bytes, UTF_8);            
@@ -70,13 +70,15 @@ public class salvarLanche extends HttpServlet {
             lanche.setNome(dados.getString("nome"));
             lanche.setDescricao(dados.getString("descricao"));
             lanche.setValor_venda(dados.getDouble("ValorVenda"));
+            System.out.println("Lanche nome: "+ lanche.getNome());
+            System.out.println("Lanche descricao: "+ lanche.getDescricao());
+            System.out.println("Lanche valorVenda: "+ lanche.getValor_venda());
+            //DaoLanche lancheDao = new DaoLanche();
+            //DaoIngrediente ingredienteDao = new DaoIngrediente();
             
-            DaoLanche lancheDao = new DaoLanche();
-            DaoIngrediente ingredienteDao = new DaoIngrediente();
+            //lancheDao.salvar(lanche);
             
-            lancheDao.salvar(lanche);
-            
-            Lanche lancheComID = lancheDao.pesquisaPorNome(lanche);
+            //Lanche lancheComID = lancheDao.pesquisaPorNome(lanche);
             
             Iterator<String> keys = ingredientes.keys();
             
@@ -86,17 +88,20 @@ public class salvarLanche extends HttpServlet {
                 Ingrediente ingredienteLanche = new Ingrediente();
                 ingredienteLanche.setNome(key);
                 
-                Ingrediente ingredienteComID = ingredienteDao.pesquisaPorNome(ingredienteLanche);
-                ingredienteComID.setQuantidade(ingredientes.getInt(key));
-                lancheDao.vincularIngrediente(lancheComID, ingredienteComID);
+                System.out.println("Ingredientes: " + ingredienteLanche.getNome());
+                //Ingrediente ingredienteComID = ingredienteDao.pesquisaPorNome(ingredienteLanche);
+                //ingredienteComID.setQuantidade(ingredientes.getInt(key));
+                //lancheDao.vincularIngrediente(lancheComID, ingredienteComID);
             }
             
             try (PrintWriter out = response.getWriter()) {
             out.println("Lanche Salvo com Sucesso!");
             }
+            response.addHeader("resultado", "sucesso");
         } else {
             try (PrintWriter out = response.getWriter()) {
             out.println("erro");
+            response.addHeader("resultado", "erro");
         }
         }
         

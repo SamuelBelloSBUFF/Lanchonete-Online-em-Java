@@ -6,7 +6,10 @@ package Controllers;
  * and open the template in the editor.
  */
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +35,7 @@ public class SalvarLancheTeste {
     }
     
     @Test
-    public void testSalvarLanche() throws ServletException, IOException {
+    public void testSalvarLancheNulo() throws ServletException, IOException {
         salvarLanche salvarlanche = new salvarLanche();
         HttpServletRequestTeste request = new HttpServletRequestTeste();
         HttpServletResponse response = new HttpServletResponseTeste();
@@ -46,7 +49,23 @@ public class SalvarLancheTeste {
             Assert.assertEquals(true,true);
         }
         
-        Assert.assertEquals(true,true);
+    }
+    
+    @Test
+    public void testSalvarLancheSucesso() throws ServletException, IOException {
+        salvarLanche salvarlanche = new salvarLanche();
+        HttpServletRequestTeste request = new HttpServletRequestTeste();
+        HttpServletResponse response = new HttpServletResponseTeste();
+        
+        File file = new File("test\\Controllers\\lancheTeste.json");
+
+        FileServletInputStream inputStream = new FileServletInputStream(file);
+        
+        request.setInputStream(inputStream);
+        
+        salvarlanche.processRequest(request, response);
+        
+        Assert.assertEquals(response.getHeader("resultado"), "sucesso");
     }
     
     @AfterClass
